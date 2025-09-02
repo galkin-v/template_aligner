@@ -60,16 +60,10 @@ class ProductTemplateAligner:
                 f"Product information folder is empty! Load your documents into the folder '{self.product_info_folder}' and run the script again."
             )
 
-        alignment_template_path = os.path.join(
-            self.templates_folder, "base_alignment_template.txt"
-        )
-        generation_template_path = os.path.join(
-            self.templates_folder, "base_generation_template.txt"
-        )
+        alignment_template_path = os.path.join(self.templates_folder, "base_alignment_template.txt")
+        generation_template_path = os.path.join(self.templates_folder, "base_generation_template.txt")
 
-        if not os.path.exists(alignment_template_path) or not os.path.exists(
-            generation_template_path
-        ):
+        if not os.path.exists(alignment_template_path) or not os.path.exists(generation_template_path):
             raise FileNotFoundError(
                 f"Base templates are missing. Ensure 'base_alignment_template.txt' and 'base_generation_template.txt' are in the '{self.templates_folder}' folder."
             )
@@ -80,9 +74,7 @@ class ProductTemplateAligner:
             self._generation_template = f.read()
         print("Base templates loaded successfully.")
 
-    def _align_template_to_product(
-        self, product_info_content: str, product_name: str
-    ) -> str:
+    def _align_template_to_product(self, product_info_content: str, product_name: str) -> str:
         """
         Private method to format the prompts and generate content using the model.
 
@@ -114,14 +106,10 @@ class ProductTemplateAligner:
         self._load_variables()
 
         for product_filename in os.listdir(self.product_info_folder):
-            product_info_full_path = os.path.join(
-                self.product_info_folder, product_filename
-            )
+            product_info_full_path = os.path.join(self.product_info_folder, product_filename)
             base, _ = os.path.splitext(product_filename)
             template_filename = f"{base}_template.txt"
-            template_full_path = os.path.join(
-                self.aligned_templates_folder, template_filename
-            )
+            template_full_path = os.path.join(self.aligned_templates_folder, template_filename)
 
             if not os.path.exists(template_full_path):
                 print(f"\nProcessing file: {product_filename}...")
