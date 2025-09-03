@@ -5,6 +5,7 @@ from pathlib import Path
 
 import litellm
 from dotenv import load_dotenv
+from gigachat_litellm_client import gigachat_handler
 
 
 class TemplateAlignerDb:
@@ -35,6 +36,16 @@ class TemplateAlignerDb:
         """
         self.db_path = db_path or self.DB_PATH
         self.model_name = model_name or self.MODEL_NAME
+
+        if self.model_name in [
+            "gigachat-provider/GigaChat-2",
+            "gigachat-provider/GigaChat-2-Pro",
+            "gigachat-provider/GigaChat-2-Max",
+        ]:
+            litellm.custom_provider_map = [
+                {"provider": "gigachat-provider", "custom_handler": gigachat_handler}
+            ]
+
         self.conn = None
         self.cursor = None
 
@@ -212,7 +223,7 @@ class TemplateAlignerDb:
 
 
 if __name__ == "__main__":
-    with TemplateAlignerDb() as aligner:
+    with TemplateAlignerDb(model_name="gigachat-provider/GigaChat-2") as aligner:
         aligner.run()
 
     print("\n--- Viewing existing templates ---")
